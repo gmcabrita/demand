@@ -2,7 +2,7 @@ defmodule Demand.MixProject do
   use Mix.Project
 
   @description """
-  A prompt library for Elixir. Port of https://github.com/jdx/demand.
+  Demand is a library for creating interactive console prompts in Elixir.
   """
   @github "https://github.com/gmcabrita/demand"
   def project do

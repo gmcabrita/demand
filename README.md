@@ -1,6 +1,8 @@
 # Demand
 
-A prompt library for Elixir. Port of [demand](https://github.com/jdx/demand).
+Demand is a library for creating interactive console prompts in Elixir.
+
+It is inspired by the Rust library [demand](https://github.com/jdx/demand) (which in turn is inspired by Go's [huh](https://github.com/charmbracelet/huh)).
 
 ## Installation
 
