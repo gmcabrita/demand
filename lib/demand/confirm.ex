@@ -1,4 +1,8 @@
 defmodule Demand.Confirm do
+  @moduledoc """
+  A Yes/No confirmation prompt.
+  """
+
   alias Demand.Ansi
   alias Demand.Term
 
@@ -9,13 +13,27 @@ defmodule Demand.Confirm do
     default: true
   ]
 
+  @doc """
+  Creates a new Confirm prompt.
+  """
   def new(prompt) do
     %__MODULE__{prompt: prompt}
   end
 
+  @doc """
+  Sets the text for the affirmative option (default: "Yes").
+  """
   def affirmative(confirm, text), do: %{confirm | affirmative: text}
+
+  @doc """
+  Sets the text for the negative option (default: "No").
+  """
   def negative(confirm, text), do: %{confirm | negative: text}
 
+  @doc """
+  Runs the prompt and waits for user confirmation.
+  Returns `{:ok, true}` for affirmative, `{:ok, false}` for negative.
+  """
   def run(confirm) do
     Term.with_raw(fn ->
       loop(confirm, confirm.default)

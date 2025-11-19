@@ -1,7 +1,5 @@
 defmodule Demand.Term do
-  @moduledoc """
-  Terminal handling (Raw mode and input reading).
-  """
+  @moduledoc false
 
   def with_raw(fun) do
     tmp_file = Path.join(System.tmp_dir!(), "demand_stty_#{System.unique_integer([:positive])}")

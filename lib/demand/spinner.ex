@@ -1,4 +1,8 @@
 defmodule Demand.Spinner do
+  @moduledoc """
+  A loading spinner for long-running tasks.
+  """
+
   alias Demand.Ansi
 
   defstruct [
@@ -7,8 +11,16 @@ defmodule Demand.Spinner do
     interval: 100
   ]
 
+  @doc """
+  Creates a new Spinner with the given text.
+  """
   def new(text), do: %__MODULE__{text: text}
 
+  @doc """
+  Runs the spinner while executing the given function.
+  Stops the spinner when the function returns.
+  Returns the result of the function.
+  """
   def run(spinner, fun) do
     # Hide cursor
     IO.write(Ansi.cursor_hide())

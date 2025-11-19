@@ -1,4 +1,8 @@
 defmodule Demand.MultiSelect do
+  @moduledoc """
+  A multiple selection prompt.
+  """
+
   alias Demand.Ansi
   alias Demand.Term
   alias Demand.Option
@@ -13,18 +17,44 @@ defmodule Demand.MultiSelect do
     limit: 10
   ]
 
+  @doc """
+  Creates a new MultiSelect prompt.
+  """
   def new(prompt) do
     %__MODULE__{prompt: prompt}
   end
 
+  @doc """
+  Adds an option to the select list.
+  Can be a string or a `Demand.Option` struct.
+  """
   def option(select, %Option{} = opt), do: %{select | options: select.options ++ [opt]}
   def option(select, value), do: option(select, Option.new(value))
   
+  @doc """
+  Sets a description to display above the prompt.
+  """
   def description(select, desc), do: %{select | description: desc}
+
+  @doc """
+  Enables or disables filtering (default: `true`).
+  """
   def filterable(select, filterable \\ true), do: %{select | filterable: filterable}
+
+  @doc """
+  Sets the minimum number of items that must be selected.
+  """
   def min_selected(select, min), do: %{select | min_selected: min}
+
+  @doc """
+  Sets the maximum number of items that can be selected.
+  """
   def max_selected(select, max), do: %{select | max_selected: max}
 
+  @doc """
+  Runs the prompt and waits for user selection.
+  Returns `{:ok, [value]}` on success.
+  """
   def run(select) do
     if select.description do
       IO.puts(Ansi.color(select.description, :grey))

@@ -1,7 +1,5 @@
 defmodule Demand.Ansi do
-  @moduledoc """
-  ANSI escape codes for terminal manipulation.
-  """
+  @moduledoc false
 
   def clear_line, do: "\e[2K\r"
   def clear_screen, do: "\e[2J"

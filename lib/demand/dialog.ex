@@ -1,4 +1,8 @@
 defmodule Demand.Dialog do
+  @moduledoc """
+  A dialog prompt with customizable buttons.
+  """
+
   alias Demand.Ansi
   alias Demand.Term
 
@@ -9,18 +13,35 @@ defmodule Demand.Dialog do
     selected_button: 0
   ]
 
+  @doc """
+  Creates a new Dialog prompt with a title.
+  """
   def new(title) do
     %__MODULE__{title: title}
   end
 
+  @doc """
+  Sets a description to display above the prompt.
+  """
   def description(dialog, desc), do: %{dialog | description: desc}
   
+  @doc """
+  Sets the list of buttons.
+  Can be a list of strings or `Demand.DialogButton` structs.
+  """
   def buttons(dialog, buttons) when is_list(buttons) do
     %{dialog | buttons: buttons}
   end
 
+  @doc """
+  Sets the initially selected button index (0-based).
+  """
   def selected_button(dialog, idx), do: %{dialog | selected_button: idx}
 
+  @doc """
+  Runs the prompt and waits for user selection.
+  Returns `{:ok, value}` on success.
+  """
   def run(dialog) do
     if dialog.description do
       IO.puts(Ansi.color(dialog.description, :grey))

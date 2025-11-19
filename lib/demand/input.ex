@@ -1,4 +1,8 @@
 defmodule Demand.Input do
+  @moduledoc """
+  A single-line text input prompt.
+  """
+
   alias Demand.Ansi
   alias Demand.Term
 
@@ -12,17 +16,48 @@ defmodule Demand.Input do
     description: nil
   ]
 
+  @doc """
+  Creates a new Input prompt with a message.
+  """
   def new(message) do
     %__MODULE__{message: message}
   end
 
+  @doc """
+  Sets the prompt prefix (default: `"? "`).
+  """
   def prompt(input, text), do: %{input | prompt: text}
+
+  @doc """
+  Sets the placeholder text to display when input is empty.
+  """
   def placeholder(input, text), do: %{input | placeholder: text}
+
+  @doc """
+  Enables or disables password mode (masked input).
+  """
   def password(input, is_password \\ true), do: %{input | password: is_password}
+
+  @doc """
+  Sets a list of suggestions for auto-completion.
+  """
   def suggestions(input, suggestions), do: %{input | suggestions: suggestions}
+
+  @doc """
+  Sets a validation function.
+  The function should receive the input string and return `:ok` or `{:error, "message"}`.
+  """
   def validation(input, validation_fn), do: %{input | validation: validation_fn}
+
+  @doc """
+  Sets a description to display above the prompt.
+  """
   def description(input, text), do: %{input | description: text}
 
+  @doc """
+  Runs the prompt and waits for user input.
+  Returns `{:ok, value}` on success.
+  """
   def run(input) do
     if input.description do
       IO.puts(Ansi.color(input.description, :grey))

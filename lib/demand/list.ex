@@ -1,4 +1,8 @@
 defmodule Demand.List do
+  @moduledoc """
+  A simple list selection prompt (scrollable).
+  """
+
   alias Demand.Ansi
   alias Demand.Term
   alias Demand.Option
@@ -11,10 +15,16 @@ defmodule Demand.List do
     limit: 10
   ]
 
+  @doc """
+  Creates a new List prompt.
+  """
   def new(title) do
     %__MODULE__{title: title}
   end
 
+  @doc """
+  Adds an item to the list.
+  """
   def item(list, value) when is_binary(value) do
     %{list | items: list.items ++ [Option.new(value)]}
   end
@@ -23,9 +33,20 @@ defmodule Demand.List do
     %{list | items: list.items ++ [opt]}
   end
   
+  @doc """
+  Sets a description to display above the prompt.
+  """
   def description(list, desc), do: %{list | description: desc}
+
+  @doc """
+  Enables or disables filtering (default: `true`).
+  """
   def filterable(list, filterable \\ true), do: %{list | filterable: filterable}
 
+  @doc """
+  Runs the prompt and waits for user selection.
+  Returns `{:ok, value}` on success.
+  """
   def run(list) do
     if list.description do
       IO.puts(Ansi.color(list.description, :grey))
