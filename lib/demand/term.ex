@@ -44,6 +44,8 @@ defmodule Demand.Term do
       "\n" -> :enter
       "\t" -> :tab
       "\x7f" -> :backspace
+      "\x03" -> :ctrl_c
+      "\x1c" -> :ctrl_c # Treat SIGQUIT (Ctrl+\) as interrupt
       char -> char
     end
   end

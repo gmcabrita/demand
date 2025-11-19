@@ -63,6 +63,10 @@ defmodule Demand.Dialog do
         IO.puts(Ansi.color("? ", :green) <> dialog.title <> " " <> Ansi.color(result, :cyan))
         {:ok, result}
 
+      {:error, :interrupted} ->
+        IO.write("\r" <> Ansi.clear_line())
+        {:error, :interrupted}
+
       {:continue, new_idx} ->
         IO.write("\r" <> Ansi.clear_line())
         loop(dialog, new_idx)
@@ -89,6 +93,7 @@ defmodule Demand.Dialog do
     IO.write(prompt <> buttons_str)
   end
 
+  defp handle_key(:ctrl_c, _dialog, _idx), do: {:error, :interrupted}
   defp handle_key(:enter, dialog, current_idx) do
     btn = Enum.at(dialog.buttons, current_idx)
     val = if is_binary(btn), do: btn, else: btn.value

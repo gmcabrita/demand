@@ -78,6 +78,11 @@ defmodule Demand.Input do
         # Final cleanup
         IO.write("\r\n")
         {:ok, new_value}
+
+      {:error, :interrupted} ->
+        # Cleanup
+        IO.write("\r\n")
+        {:error, :interrupted}
       
       {:continue, new_value, new_cursor_pos, new_error} ->
         # If we had an error line, we need to clear it before re-rendering
@@ -138,6 +143,10 @@ defmodule Demand.Input do
       # Restore cursor column
       IO.write("\r" <> Ansi.cursor_right(prompt_len + cursor_pos))
     end
+  end
+
+  defp handle_key(:ctrl_c, _input, _value, _cursor_pos) do
+    {:error, :interrupted}
   end
 
   defp handle_key(:enter, input, value, _cursor_pos) do

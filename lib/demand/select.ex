@@ -68,6 +68,10 @@ defmodule Demand.Select do
         IO.puts(Ansi.color("? ", :green) <> select.prompt <> " " <> Ansi.color(selected_option.label, :cyan))
         {:ok, selected_option.value}
 
+      {:error, :interrupted} ->
+        clear_render(select, visible_options)
+        {:error, :interrupted}
+
       {:continue, new_filter, new_cursor} ->
         clear_render(select, visible_options)
         loop(select, new_filter, new_cursor)
@@ -143,6 +147,10 @@ defmodule Demand.Select do
       IO.write(Ansi.clear_line() <> "\r" <> Ansi.cursor_down(1))
     end)
     IO.write(Ansi.cursor_up(count))
+  end
+
+  defp handle_key(:ctrl_c, _select, _filter, _cursor, _visible_options) do
+    {:error, :interrupted}
   end
 
   defp handle_key(:enter, _select, _filter, cursor, visible_options) do

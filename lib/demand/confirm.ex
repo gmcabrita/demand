@@ -52,6 +52,10 @@ defmodule Demand.Confirm do
         IO.puts(Ansi.color("? ", :green) <> confirm.prompt <> " " <> Ansi.color(answer_text, :cyan))
         {:ok, result}
 
+      {:error, :interrupted} ->
+        IO.write("\r" <> Ansi.clear_line())
+        {:error, :interrupted}
+
       {:continue, new_choice} ->
         IO.write("\r" <> Ansi.clear_line())
         loop(confirm, new_choice)
@@ -74,6 +78,7 @@ defmodule Demand.Confirm do
     IO.write(prompt <> yes_text <> " / " <> no_text)
   end
 
+  defp handle_key(:ctrl_c, _confirm, _choice), do: {:error, :interrupted}
   defp handle_key(:enter, _confirm, current_choice), do: {:ok, current_choice}
   defp handle_key("y", _confirm, _), do: {:ok, true}
   defp handle_key("n", _confirm, _), do: {:ok, false}

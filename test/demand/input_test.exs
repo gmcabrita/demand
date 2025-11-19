@@ -40,4 +40,14 @@ defmodule Demand.InputTest do
       assert {:ok, "Alice"} = Input.run(input)
     end)
   end
+
+  test "handles Ctrl+C (SIGINT)" do
+    input = Input.new("Name")
+    # Send Ctrl+C (\x03)
+    user_input = "\x03"
+
+    capture_io([input: user_input, capture_prompt: true], fn ->
+      assert {:error, :interrupted} = Input.run(input)
+    end)
+  end
 end

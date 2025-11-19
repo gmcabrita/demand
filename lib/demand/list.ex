@@ -74,6 +74,10 @@ defmodule Demand.List do
         # List might just exit.
         {:ok, selected_item.value}
 
+      {:error, :interrupted} ->
+        clear_render(list, visible_items)
+        {:error, :interrupted}
+
       {:continue, new_filter, new_cursor} ->
         clear_render(list, visible_items)
         loop(list, new_filter, new_cursor)
@@ -129,6 +133,10 @@ defmodule Demand.List do
       IO.write(Ansi.clear_line() <> "\r" <> Ansi.cursor_down(1))
     end)
     IO.write(Ansi.cursor_up(count))
+  end
+
+  defp handle_key(:ctrl_c, _list, _filter, _cursor, _visible_items) do
+    {:error, :interrupted}
   end
 
   defp handle_key(:enter, _list, _filter, cursor, visible_items) do
