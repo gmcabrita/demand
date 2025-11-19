@@ -1,6 +1,6 @@
 # Demand
 
-A prompt library for Elixir. Port of [demand](https://github.com/jdx/demand) for Rust.
+A prompt library for Elixir. Port of [demand](https://github.com/jdx/demand).
 
 ## Installation
 

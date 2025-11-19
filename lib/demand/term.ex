@@ -9,17 +9,18 @@ defmodule Demand.Term do
     # Save settings
     # We use :nouse_stdio to ensure stty inherits stdin from the BEAM process (the TTY)
     # and we redirect output to a file to capture the settings string.
-    if run_port_cmd("stty -g > '#{tmp_file}'") == 0 do
+    # We redirect stderr to /dev/null to avoid noise when not running in a TTY (e.g. tests)
+    if run_port_cmd("stty -g > '#{tmp_file}' 2>/dev/null") == 0 do
       initial_settings = File.read!(tmp_file) |> String.trim()
 
       # Set raw mode
-      run_port_cmd("stty raw -echo")
+      run_port_cmd("stty raw -echo 2>/dev/null")
 
       try do
         fun.()
       after
         # Restore settings
-        run_port_cmd("stty #{initial_settings}")
+        run_port_cmd("stty #{initial_settings} 2>/dev/null")
         File.rm(tmp_file)
       end
     else
